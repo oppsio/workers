@@ -1,0 +1,22 @@
+{
+  "name": "workers",
+  "version": "1.0.0",
+  "description": "oppsio workers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oppsio/workers.git"
+  },
+  "author": "Ricardo Rossi <rrossi@endata.com> (http://www.ricardorossi.org/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oppsio/workers/issues"
+  },
+  "homepage": "https://github.com/oppsio/workers#readme",
+  "dependencies": {
+    "kue": "^0.11.0"
+  }
+}
