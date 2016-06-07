@@ -18,7 +18,8 @@
   "homepage": "https://github.com/oppsio/workers#readme",
   "dependencies": {
     "kue": "^0.11.0",
-    "nightmare": "^2.5.0"
+    "nightmare": "^2.5.0",
+    "vo": "^3.1.1"
   },
   "devDependencies": {
     "eslint": "^2.11.1"
