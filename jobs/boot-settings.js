@@ -4,11 +4,12 @@ const queue = kue.createQueue();
 const settings = {
   settings: {
     site: {
-      id: '121312',
-      code: 'site-code',
-      startUrl: '',
-      baseUrl: 'http://www.domain.com/',
-      pagePattern: '',
+      id: '123456',
+      code: 'localhost',
+      startUrl: 'http://localhost:3000/',
+      baseUrl: 'http://localhost:3000/',
+      linkPattern: 'a[href^="/job"',
+      waitForLinks: 3,
       pageTrigger: '',
       pageSelector: '',
       pageSize: '',

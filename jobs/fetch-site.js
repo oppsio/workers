@@ -33,29 +33,35 @@ class FetchSite {
    */
   fetchSiteLinks(settings) {
     const urls = [];
+    const site = settings.settings.site;
     const nightmare = Nightmare({
       show: false
     });
 
+    console.log(site);
+
     nightmare
       .useragent(config.useragent)
-      .goto('http://localhost:3000/')
-      .wait(() => {
-        return document.querySelectorAll('a[href^="/job"').length >= 3;
-      })
-      .evaluate(() => {
+      .goto(site.startUrl)
+      .wait((linkPattern, waitForLinks) => { // arguments passed as aditional arg below
+        return document.querySelectorAll(linkPattern).length >= waitForLinks;
+      }, site.linkPattern, site.waitForLinks) // passing arguments to evaluate()
+      .evaluate((linkPattern) => { // linkPattern passed as aditional arg below
         var hrefs = [];
-        var links = document.querySelectorAll('a[href^="/job"');
+        var links = document.querySelectorAll(linkPattern);
         for (i = 0; i < links.length; i++) {
           hrefs.push(links[i].href);
         }
         return hrefs;
-      })
+      }, site.linkPattern); // passing argument to evaluate()
+
+    nightmare
       .end()
       .then((result) => {
         result.forEach((link) => {
           urls.push(link);
         });
+        console.log(result);
         // this.dumpResult(urls);
       })
       .catch((error) => {
