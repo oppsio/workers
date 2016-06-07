@@ -1,7 +1,5 @@
-var Nightmare = require('nightmare');
-var nightmare = Nightmare({
-  show: true
-})
+const Nightmare = require('nightmare');
+const config = require('../config');
 
 /**
  * Fetch Site Job
@@ -34,13 +32,18 @@ class FetchSite {
    * fetches site links
    */
   fetchSiteLinks(settings) {
+    const urls = [];
+    const nightmare = Nightmare({
+      show: false
+    });
 
     nightmare
+      .useragent(config.useragent)
       .goto('http://localhost:3000/')
-      .wait(function() {
+      .wait(() => {
         return document.querySelectorAll('a[href^="/job"').length >= 3;
       })
-      .evaluate(function() {
+      .evaluate(() => {
         var hrefs = [];
         var links = document.querySelectorAll('a[href^="/job"');
         for (i = 0; i < links.length; i++) {
@@ -49,23 +52,16 @@ class FetchSite {
         return hrefs;
       })
       .end()
-      .then(function(result) {
-        console.log(result);
+      .then((result) => {
+        result.forEach((link) => {
+          urls.push(link);
+        });
+        // this.dumpResult(urls);
       })
-      .catch(function(error) {
+      .catch((error) => {
+        //TODO: use loggly ??
         console.error('Failed to fetch site:', error);
       });
-
-    console.log(settings);
-    console.log('FETCHING LINKS');
-    console.log(this.Q.INBOX);
-    console.log(this.Q.OUTBOX);
-    const links = [{
-      url: 'aa'
-    }, {
-      url: 'asdas',
-    }];
-    this.dumpResult(links);
   }
 
   /**
@@ -73,10 +69,12 @@ class FetchSite {
    */
   dumpResult(links) {
     links.forEach((link) => {
-      console.log(link);
-      this.queue.create(this.Q.OUTBOX, link).save((err) => {
+      const entry = {
+        url: link
+      };
+      this.queue.create(this.Q.OUTBOX, entry).save((err) => {
         if (!err) {
-          console.log();
+          console.log(`adding ${entry}`);
         }
       });
     });
